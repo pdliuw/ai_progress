@@ -1,7 +1,8 @@
 name: ai_progress
 description: A new multiple style progress include of circular、linear and step style progress indicator.
-version: 0.1.0
-homepage: https://github.com/pdliuw/ai_progress
+version: 0.1.1
+homepage: https://pdliuw.github.io/
+repository: https://github.com/pdliuw/ai_progress
 
 environment:
   sdk: ">=2.7.0 <3.0.0"

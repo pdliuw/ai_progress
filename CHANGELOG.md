@@ -1,3 +1,7 @@
+## [0.1.1] - Document
+
+* config document
+
 ## [0.1.0] - Stable
 
 * stable version
