@@ -1,7 +1,7 @@
 name: ai_progress
 description: A new multiple style progress Flutter package.
 version: 0.0.1
-homepage:
+homepage: https://github.com/pdliuw/ai_progress
 
 environment:
   sdk: ">=2.7.0 <3.0.0"
