@@ -1,3 +1,7 @@
+import 'dart:ui';
+
+import 'package:ai_progress/ai_progress.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -11,22 +15,24 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
-        // This is the theme of your application.
-        //
-        // Try running your application with "flutter run". You'll see the
-        // application has a blue toolbar. Then, without quitting the app, try
-        // changing the primarySwatch below to Colors.green and then invoke
-        // "hot reload" (press "r" in the console where you ran "flutter run",
-        // or simply save your changes to "hot reload" in a Flutter IDE).
-        // Notice that the counter didn't reset back to zero; the application
-        // is not restarted.
         primarySwatch: Colors.blue,
-        // This makes the visual density adapt to the platform that you run
-        // the app on. For desktop platforms, the controls will be smaller and
-        // closer together (more dense) than on mobile platforms.
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      home: MyHomePage(title: 'Flutter Demo Home Page'),
+      home: HomePage(),
+    );
+  }
+}
+
+class HomePage extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        Expanded(
+          flex: 1,
+          child: MyHomePage(title: 'Flutter Demo Home Page'),
+        ),
+      ],
     );
   }
 }
@@ -34,84 +40,262 @@ class MyApp extends StatelessWidget {
 class MyHomePage extends StatefulWidget {
   MyHomePage({Key key, this.title}) : super(key: key);
 
-  // This widget is the home page of your application. It is stateful, meaning
-  // that it has a State object (defined below) that contains fields that affect
-  // how it looks.
-
-  // This class is the configuration for the state. It holds the values (in this
-  // case the title) provided by the parent (in this case the App widget) and
-  // used by the build method of the State. Fields in a Widget subclass are
-  // always marked "final".
-
   final String title;
 
   @override
   _MyHomePageState createState() => _MyHomePageState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
+class _MyHomePageState extends State<MyHomePage>
+    with SingleTickerProviderStateMixin {
   int _counter = 0;
 
-  void _incrementCounter() {
-    setState(() {
-      // This call to setState tells the Flutter framework that something has
-      // changed in this State, which causes it to rerun the build method below
-      // so that the display can reflect the updated values. If we changed
-      // _counter without calling setState(), then the build method would not be
-      // called again, and so nothing would appear to happen.
-      _counter++;
-    });
+  static const double MAX = 10.0;
+  static const double MIN = 1.0;
+  static int _divisions = 99;
+
+  double _progressValue = 1;
+  double _slideValue = MAX;
+
+  AnimationController _controller;
+  Animation<Color> _colorTween;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = AnimationController(vsync: this);
+    _colorTween = _controller.drive(ColorTween(
+      begin: Colors.grey,
+      end: Colors.green,
+    ));
+    _controller.value = _progressValue;
   }
 
   @override
+  void dispose() {
+    super.dispose();
+    _controller.dispose();
+    Paint paint = Paint();
+
+    paint..isAntiAlias = true;
+  }
+
+  Map<int, Widget> _segmentChildren = {
+    1: Text("1"),
+    2: Text("2"),
+    3: Text("3"),
+    4: Text("4"),
+    5: Text("5"),
+    6: Text("6"),
+    7: Text("7"),
+    8: Text("8"),
+    9: Text("9"),
+    10: Text("10"),
+  };
+  int _segmentValue = 1;
+
+  @override
   Widget build(BuildContext context) {
-    // This method is rerun every time setState is called, for instance as done
-    // by the _incrementCounter method above.
-    //
-    // The Flutter framework has been optimized to make rerunning build methods
-    // fast, so that you can just rebuild anything that needs updating rather
-    // than having to individually change instances of widgets.
     return Scaffold(
       appBar: AppBar(
-        // Here we take the value from the MyHomePage object that was created by
-        // the App.build method, and use it to set our appbar title.
         title: Text(widget.title),
       ),
-      body: Center(
-        // Center is a layout widget. It takes a single child and positions it
-        // in the middle of the parent.
+      body: SingleChildScrollView(
         child: Column(
-          // Column is also a layout widget. It takes a list of children and
-          // arranges them vertically. By default, it sizes itself to fit its
-          // children horizontally, and tries to be as tall as its parent.
-          //
-          // Invoke "debug painting" (press "p" in the console, choose the
-          // "Toggle Debug Paint" action from the Flutter Inspector in Android
-          // Studio, or the "Toggle Debug Paint" command in Visual Studio Code)
-          // to see the wireframe for each widget.
-          //
-          // Column has various properties to control how it sizes itself and
-          // how it positions its children. Here we use mainAxisAlignment to
-          // center the children vertically; the main axis here is the vertical
-          // axis because Columns are vertical (the cross axis would be
-          // horizontal).
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Text(
-              'You have pushed the button this many times:',
+          children: [
+            Row(
+              children: [
+                Expanded(
+                  child: CupertinoSegmentedControl(
+                    padding: EdgeInsets.all(5),
+                    children: _segmentChildren,
+                    onValueChanged: (int index) {
+                      setState(() {
+                        _segmentValue = index;
+                        _controller.value = index * 10 / 100;
+                      });
+                    },
+                    groupValue: _segmentValue,
+                  ),
+                ),
+              ],
             ),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headline4,
+            Align(
+              child: Text("$_segmentValue"),
+            ),
+            Slider(
+              min: MIN,
+              max: MAX,
+              value: _segmentValue.toDouble(),
+              onChanged: (double newValue) {
+                setState(() {
+                  _segmentValue = newValue.toInt();
+                  _controller.value = newValue;
+                });
+              },
+            ),
+            Stack(
+              alignment: Alignment.center,
+              children: <Widget>[
+                Container(
+                  width: 150,
+                  height: 150,
+                  padding: EdgeInsets.all(5),
+                  child: CircularProgressIndicator(
+                    value: _segmentValue / 10,
+                    strokeWidth: 10.0,
+                    valueColor: _colorTween,
+                  ),
+                ),
+                Text("${_segmentValue / 10 * 100}%"),
+              ],
+            ),
+            //圆环、扇形样式的进度
+            Row(
+              children: [
+                Spacer(),
+                Stack(
+                  alignment: Alignment.center,
+                  children: <Widget>[
+                    Container(
+                      width: 150,
+                      height: 150,
+                      padding: EdgeInsets.all(5),
+                      child: AirCircularStateProgressIndicator(
+                        size: Size(150, 150),
+                        value: _segmentValue / 10 * 100, //1~100
+                        pathColor: Colors.white,
+                        valueColor:
+                            ColorTween(begin: Colors.grey, end: Colors.blue)
+                                .transform(_segmentValue / 10),
+                        pathStrokeWidth: 10.0,
+                        valueStrokeWidth: 10.0,
+                        useCenter: false,
+                        filled: false,
+                      ),
+                    ),
+                    Text("${_segmentValue / 10 * 100}%"),
+                  ],
+                ),
+                Spacer(),
+                Stack(
+                  alignment: Alignment.center,
+                  children: <Widget>[
+                    Container(
+                      width: 150,
+                      height: 150,
+                      padding: EdgeInsets.all(5),
+                      child: AirCircularStateProgressIndicator(
+                        size: Size(150, 150),
+                        value: _segmentValue / 10 * 100, //1~100
+                        pathColor: Colors.white,
+                        valueColor:
+                            ColorTween(begin: Colors.grey, end: Colors.blue)
+                                .transform(_segmentValue / 10),
+                        pathStrokeWidth: 10.0,
+                        valueStrokeWidth: 10.0,
+                        useCenter: true,
+                        filled: true,
+                      ),
+                    ),
+                    Text("${_segmentValue / 10 * 100}%"),
+                  ],
+                ),
+                Spacer(),
+              ],
+            ),
+            //线性、步进样式的进度
+            Row(
+              children: [
+                Spacer(),
+                Stack(
+                  alignment: Alignment.center,
+                  children: <Widget>[
+                    Container(
+                      width: 150,
+                      height: 50,
+                      padding: EdgeInsets.all(5),
+                      child: AirLinearStateProgressIndicator(
+                        size: Size(150, 150),
+                        value: _segmentValue / 10 * 100, //1~100
+                        valueColor:
+                            ColorTween(begin: Colors.grey, end: Colors.blue)
+                                .transform(_segmentValue / 10),
+                        pathStrokeWidth: 10.0,
+                        valueStrokeWidth: 10.0,
+                        roundCap: true,
+                      ),
+                    ),
+                    Text("${_segmentValue / 10 * 100}%"),
+                  ],
+                ),
+                Spacer(),
+                Row(
+                  children: [
+                    Container(
+                      width: 90,
+                      height: 50,
+                      padding: EdgeInsets.all(0),
+                      child: AirStepStateProgressIndicator(
+                        size: Size(150, 150),
+                        stepCount: _segmentChildren.length,
+                        stepValue: _segmentValue,
+                        valueColor:
+                            ColorTween(begin: Colors.grey, end: Colors.blue)
+                                .transform(_segmentValue / 10),
+                        pathStrokeWidth: 10.0,
+                        valueStrokeWidth: 10.0,
+                      ),
+                    ),
+                    Text("${_segmentValue / 10 * 100}%"),
+                  ],
+                ),
+                Spacer(),
+              ],
+            ),
+            Row(
+              children: [
+                Spacer(),
+                Row(
+                  children: [
+                    Container(
+                      width: 250,
+                      height: 50,
+                      padding: EdgeInsets.all(0),
+                      child: AirStepStateProgressIndicator(
+                        size: Size(150, 150),
+                        stepCount: _segmentChildren.length,
+                        stepValue: _segmentValue,
+                        valueColor:
+                            ColorTween(begin: Colors.grey, end: Colors.blue)
+                                .transform(_segmentValue / 10),
+                        pathStrokeWidth: 30.0,
+                        valueStrokeWidth: 30.0,
+                      ),
+                    ),
+                    Text("${_segmentValue / 10 * 100}%"),
+                  ],
+                ),
+                Spacer(),
+              ],
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                Container(
+                  width: 150,
+                  padding: EdgeInsets.all(5),
+                  child: LinearProgressIndicator(
+                    value: _segmentValue / 10,
+                    valueColor: _colorTween,
+                  ),
+                ),
+                Text("${_segmentValue / 10 * 100}%"),
+              ],
             ),
           ],
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: Icon(Icons.add),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
     );
   }
 }

@@ -1,7 +1,6 @@
-library aiprogress;
+library ai_progress;
 
-/// A Calculator.
-class Calculator {
-  /// Returns [value] plus 1.
-  int addOne(int value) => value + 1;
-}
+/// export
+export 'src/circular_state_progress_indicator.dart';
+export 'src/linear_state_progress_indicator.dart';
+export 'src/step_state_progress_indicator.dart';
