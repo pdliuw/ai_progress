@@ -1,6 +1,6 @@
 name: ai_progress
-description: A new multiple style progress Flutter package.
-version: 0.0.1
+description: A new multiple style progress include of circular、linear and step style progress indicator.
+version: 0.0.2
 homepage: https://github.com/pdliuw/ai_progress
 
 environment:

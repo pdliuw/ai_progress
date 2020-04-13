@@ -7,14 +7,14 @@
 |[English Document](https://github.com/pdliuw/ai_progress/blob/master/README_EN.md)|[中文文档](https://github.com/pdliuw/ai_progress)|
 |:-|:-|
 
-##### ai_progress 支持:
+##### ai_progress Support:
 
 ai_progress: [![pub package](https://img.shields.io/pub/v/ai_progress.svg)](https://pub.dev/packages/ai_progress)
 
-* 1. 圆环进度
-* 2. 扇形进度
-* 3. 线性进度
-* 4. 步进进度
+* 1. circular progress
+* 2. arc progress
+* 3. linear progress
+* 4. step progress
 
 ## Effect
 
@@ -30,13 +30,13 @@ ai_progress: [![pub package](https://img.shields.io/pub/v/ai_progress.svg)](http
 
 
 
-## 1.安装
+## 1.Installing
 
-使用当前包作为依赖库
+Use this package as a library
 
-### 1. 依赖此库
+### 1. Depend on it
 
-在文件 'pubspec.yaml' 中添加
+Add this to your package's pubspec.yaml file:
 
 [![pub package](https://img.shields.io/pub/v/ai_progress.svg)](https://pub.dev/packages/ai_progress)
 
@@ -48,21 +48,24 @@ dependencies:
 
 ```
 
-或者以下方式依赖
+Or depending on
 
 ```
 dependencies:
 
-  # ai_progress package.
+  # ai_progress plugin.
   ai_progress:
     git:
       url: https://github.com/pdliuw/ai_progress.git
 
 ```
 
-### 2. 安装此库
+### 2. Install it
 
-你可以通过下面的命令行来安装此库
+You can install packages from the command line:
+
+with Flutter:
+
 
 ```
 
@@ -71,26 +74,28 @@ $ flutter pub get
 
 ```
 
-你也可以通过项目开发工具通过可视化操作来执行上述步骤
+Alternatively, your editor might support flutter pub get. Check the docs for your editor to learn more.
 
-### 3. 导入此库
+### 3. Import it
 
-现在，在你的Dart编辑代码中，你可以使用：
+Now in your Dart code, you can use:
 
 ```
 
 import 'package:ai_progress/ai_progress.dart';
 
+
 ```
 
-## 2.使用
+## 2.Usage
 
-### 1. 圆环进度-方形帽
+### 1. circular progress-square cap
 
 |ai_progress: circular-square|
 |:-|
 |![circular-square](https://github.com/pdliuw/ai_progress/blob/master/example/gif/ai_progress_circular-square.gif)|
 |:-|
+
 
 ```
     
@@ -114,12 +119,13 @@ import 'package:ai_progress/ai_progress.dart';
 ```
 
 
-### 2. 圆环进度-圆形帽
+### 2. circular progress-round cap
 
 |ai_progress: circular-round|
 |:-|
 |![circular-round](https://github.com/pdliuw/ai_progress/blob/master/example/gif/ai_progress_circular-round.gif)|
 |:-|
+
 
 ```
     
@@ -149,7 +155,8 @@ import 'package:ai_progress/ai_progress.dart';
     
 ```
 
-### 3. 扇形进度
+
+### 3. arc progress
 
 |ai_progress: circular-arc|
 |:-|
@@ -186,12 +193,13 @@ import 'package:ai_progress/ai_progress.dart';
 ```
 
 
-### 4. 线性进度-方形帽
+### 4. linear progress-square
 
 |ai_progress: linear-square|
 |:-|
 |![linear-square](https://github.com/pdliuw/ai_progress/blob/master/example/gif/ai_progress_linear-square.gif)|
 |:-|
+
 
 ```
     
@@ -212,12 +220,14 @@ import 'package:ai_progress/ai_progress.dart';
     
 ```
 
-### 5. 线性进度-圆形帽
+
+### 5. linear progress-round
 
 |ai_progress: linear-round|
 |:-|
 |![linear-round](https://github.com/pdliuw/ai_progress/blob/master/example/gif/ai_progress_linear-round.gif)|
 |:-|
+
 
 
 ```
@@ -246,12 +256,14 @@ import 'package:ai_progress/ai_progress.dart';
     
 ```
 
-### 6. 步进进度-normal
+
+### 6. step progress-normal
 
 |ai_progress: step-normal|
 |:-|
 |![step-normal](https://github.com/pdliuw/ai_progress/blob/master/example/gif/ai_progress_step-normal.gif)|
 |:-|
+
 
 ```
 
@@ -279,12 +291,14 @@ import 'package:ai_progress/ai_progress.dart';
     
 ```
 
-### 7. 步进进度-larger
+
+### 7. step progress-larger
 
 |ai_progress: step-larger|
 |:-|
 |![step-larger](https://github.com/pdliuw/ai_progress/blob/master/example/gif/ai_progress_step-larger.gif)|
 |:-|
+
 
 ```
    
@@ -312,7 +326,7 @@ import 'package:ai_progress/ai_progress.dart';
 ```
 
 
-意犹未尽？[点击，查看项目示例](https://github.com/pdliuw/flutter_app_sample)
+want to look more?[Click me，Look more](https://github.com/pdliuw/flutter_app_sample)
 
 
 ## LICENSE
