@@ -20,12 +20,12 @@ ai_progress: [![pub package](https://img.shields.io/pub/v/ai_progress.svg)](http
 
 |iOS-ai_progress|Android-ai_progress|
 |:-|:-|
-|![ios](https://github.com/pdliuw/ai_progress/blob/master/example/gif/ai_progress_ios.gif)|![android](https://github.com/pdliuw/ai_barcode/blob/master/example/gif/ai_progress_android.gif)|
+|![ios](https://github.com/pdliuw/ai_progress/blob/master/example/gif/ai_progress_ios.gif)|![android](https://github.com/pdliuw/ai_progress/blob/master/example/gif/ai_progress_android.gif)|
 |:-|:-|
 
 |macOS-ai_progress|Web-ai_progress|
 |:-|:-|
-|![macOS](https://github.com/pdliuw/ai_barcode/blob/master/example/gif/ai_progress_macOS.gif)|![web](https://github.com/pdliuw/ai_barcode/blob/master/example/gif/ai_progress_web.gif)|
+|![macOS](https://github.com/pdliuw/ai_progress/blob/master/example/gif/ai_progress_macOS.gif)|![web](https://github.com/pdliuw/ai_progress/blob/master/example/gif/ai_progress_web.gif)|
 |:-|:-|
 
 
