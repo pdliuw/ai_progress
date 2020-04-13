@@ -1,3 +1,7 @@
+## [0.1.0] - Stable
+
+* stable version
+
 ## [0.0.2] - Document
 
 * add document
