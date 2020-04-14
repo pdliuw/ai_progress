@@ -4,6 +4,15 @@ import 'package:flutter/material.dart';
 /// AirStepStateProgressIndicator
 // ignore: must_be_immutable
 class AirStepStateProgressIndicator extends StatefulWidget {
+  /// Limited
+  static const int LIMITED_STEP_MIN_VALUE = 0;
+
+  /// Default values
+  static const int DEFAULT_STEP_COUNT = 10;
+  static const int DEFAULT_STEP_VALUE = 1;
+  static const double DEFAULT_STROKE_WIDTH = 5.0;
+  static const double DEFAULT_SPACE_WIDTH = 2.0;
+
   final Size size;
   final int stepCount;
   final int stepValue;
@@ -15,18 +24,32 @@ class AirStepStateProgressIndicator extends StatefulWidget {
   Color _pathColor;
   Color _valueColor;
 
+  bool _roundCap;
+
   /// constructor
   AirStepStateProgressIndicator({
     this.size,
-    this.stepCount,
-    this.stepValue,
-    double pathStrokeWidth = 5.0,
-    double valueStrokeWidth = 5.0,
-    double spaceWidth = 2.0,
+    this.stepCount = DEFAULT_STEP_COUNT,
+    this.stepValue = DEFAULT_STEP_VALUE,
+    double pathStrokeWidth = DEFAULT_STROKE_WIDTH,
+    double valueStrokeWidth = DEFAULT_STROKE_WIDTH,
+    double spaceWidth = DEFAULT_SPACE_WIDTH,
     Color pathColor = Colors.grey,
     Color valueColor = Colors.green,
+    bool roundCap = false,
   }) {
-    if (stepCount <= 0) {}
+    assert(size != null);
+    assert(stepCount != null);
+    assert(stepCount > LIMITED_STEP_MIN_VALUE);
+    assert(stepValue != null);
+    assert(stepValue >= LIMITED_STEP_MIN_VALUE);
+    assert(stepValue <= stepCount);
+    assert(pathStrokeWidth != null);
+    assert(valueStrokeWidth != null);
+    assert(spaceWidth != null);
+    assert(pathColor != null);
+    assert(valueColor != null);
+    assert(roundCap != null);
 
     //stroke width
     _pathStrokeWidth = pathStrokeWidth;
@@ -38,6 +61,9 @@ class AirStepStateProgressIndicator extends StatefulWidget {
     //color
     _pathColor = pathColor;
     _valueColor = valueColor;
+
+    //cap style
+    _roundCap = roundCap;
   }
   @override
   State<StatefulWidget> createState() {
@@ -60,6 +86,7 @@ class _StepStateProgressIndicator extends State<AirStepStateProgressIndicator> {
         spaceWidth: widget._spaceWidth,
         pathColor: widget._pathColor,
         valueColor: widget._valueColor,
+        roundCap: widget._roundCap,
       ),
     );
   }
@@ -79,6 +106,8 @@ class StepProgressPainter extends CustomPainter with ProgressMixin {
   Color _valueColor;
   Color _pathColor;
 
+  bool _roundCap;
+
   /// constructor
   StepProgressPainter._({
     @required bool shouldRepaint,
@@ -89,6 +118,7 @@ class StepProgressPainter extends CustomPainter with ProgressMixin {
     double spaceWidth,
     Color pathColor,
     Color valueColor,
+    bool roundCap,
   }) {
     //should repaint
     _shouldRepaint = shouldRepaint;
@@ -102,6 +132,7 @@ class StepProgressPainter extends CustomPainter with ProgressMixin {
     //stroke
     _pathStrokeWidth = pathStrokeWidth;
     _valueStrokeWidth = valueStrokeWidth;
+    _roundCap = roundCap;
 
     //
     _spaceWidth = spaceWidth;
@@ -155,8 +186,10 @@ class StepProgressPainter extends CustomPainter with ProgressMixin {
 
   Paint _getDrawPathPaint() {
     return Paint()
-      ..color = Colors.grey
+      ..color = pathColor
       ..style = PaintingStyle.stroke
+      ..strokeCap = _roundCap ? StrokeCap.round : StrokeCap.butt
+      ..strokeJoin = _roundCap ? StrokeJoin.round : StrokeJoin.miter
       ..strokeWidth = pathStrokeWidth;
   }
 
@@ -164,6 +197,8 @@ class StepProgressPainter extends CustomPainter with ProgressMixin {
     return Paint()
       ..color = valueColor
       ..style = PaintingStyle.stroke
+      ..strokeCap = _roundCap ? StrokeCap.round : StrokeCap.butt
+      ..strokeJoin = _roundCap ? StrokeJoin.round : StrokeJoin.miter
       ..strokeWidth = valueStrokeWidth;
   }
 

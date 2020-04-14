@@ -24,6 +24,7 @@ class AirCircularStateProgressIndicator extends StatefulWidget {
   double _valueStrokeWidth;
   bool _filled;
   bool _useCenter;
+  bool _roundCap;
 
   /// constructor
   AirCircularStateProgressIndicator({
@@ -37,6 +38,7 @@ class AirCircularStateProgressIndicator extends StatefulWidget {
     double valueStrokeWidth = 5,
     bool filled = false,
     bool useCenter = false,
+    bool roundCap = true,
   }) {
     assert(size != null);
     assert(min >= LIMITED_MIN_VALUE);
@@ -49,6 +51,7 @@ class AirCircularStateProgressIndicator extends StatefulWidget {
     assert(valueStrokeWidth != null);
     assert(filled != null);
     assert(useCenter != null);
+    assert(roundCap != null);
     _size = size;
     //value
     _value = value;
@@ -64,6 +67,7 @@ class AirCircularStateProgressIndicator extends StatefulWidget {
     //
     _filled = filled;
     _useCenter = useCenter;
+    _roundCap = roundCap;
 
     //The strokeWidth is zero when _filled is true,
     if (_filled) {
@@ -101,8 +105,8 @@ class _CircularStateProgressIndicatorState
     return Paint()
       ..color = widget._pathColor
       ..strokeWidth = widget._pathStrokeWidth
-      ..strokeCap = StrokeCap.round
-      ..strokeJoin = StrokeJoin.round
+      ..strokeCap = widget._roundCap ? StrokeCap.round : StrokeCap.square
+      ..strokeJoin = widget._roundCap ? StrokeJoin.round : StrokeJoin.bevel
       ..style = widget._filled ? PaintingStyle.fill : PaintingStyle.stroke;
   }
 
@@ -110,8 +114,8 @@ class _CircularStateProgressIndicatorState
     return Paint()
       ..color = widget._valueColor
       ..strokeWidth = widget._valueStrokeWidth
-      ..strokeCap = StrokeCap.round
-      ..strokeJoin = StrokeJoin.bevel
+      ..strokeCap = widget._roundCap ? StrokeCap.round : StrokeCap.square
+      ..strokeJoin = widget._roundCap ? StrokeJoin.round : StrokeJoin.bevel
       ..style = widget._filled ? PaintingStyle.fill : PaintingStyle.stroke;
   }
 }

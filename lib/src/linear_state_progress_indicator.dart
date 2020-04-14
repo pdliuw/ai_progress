@@ -1,6 +1,11 @@
 import 'package:ai_progress/src/progress_mixin.dart';
 import 'package:flutter/material.dart';
 
+///
+const double LINEAR_LIMITED_MIN_VALUE = 0;
+const double LINEAR_LIMITED_MAX_VALUE = 100;
+const double LINEAR_DEFAULT_VALUE = 10;
+
 /// LinearStateProgressIndicator
 ///
 // ignore: must_be_immutable
@@ -19,9 +24,9 @@ class AirLinearStateProgressIndicator extends StatefulWidget {
   /// constructor
   AirLinearStateProgressIndicator({
     @required Size size,
-    double min = 0.0,
-    double max = 100.0,
-    double value = 10,
+    double min = LINEAR_LIMITED_MIN_VALUE,
+    double max = LINEAR_LIMITED_MAX_VALUE,
+    double value = LINEAR_DEFAULT_VALUE,
     Color pathColor = Colors.white,
     Color valueColor = Colors.green,
     bool roundCap = true,
@@ -29,6 +34,17 @@ class AirLinearStateProgressIndicator extends StatefulWidget {
     double pathStrokeWidth,
     double valueStrokeWidth,
   }) {
+    assert(size != null);
+    assert(min >= LINEAR_LIMITED_MIN_VALUE);
+    assert(max <= LINEAR_LIMITED_MAX_VALUE);
+    assert(value >= min);
+    assert(value <= max);
+    assert(pathColor != null);
+    assert(valueColor != null);
+    assert(roundCap != null);
+    assert(shouldRepaint != null);
+    assert(pathStrokeWidth != null);
+    assert(valueStrokeWidth != null);
     _size = size;
     _min = min;
     _max = max;
@@ -128,7 +144,6 @@ class LinearProgressPainter extends CustomPainter with ProgressMixin {
   @override
   drawProgressPath({Canvas canvas, Paint paint, Size size}) {
     double heightCenter = size.height / 2;
-    double widthCenter = size.width / 2;
     double width = size.width;
 
     Offset startPoint = Offset(0, heightCenter);
@@ -140,8 +155,6 @@ class LinearProgressPainter extends CustomPainter with ProgressMixin {
   @override
   drawProgressValue({Canvas canvas, Paint paint, Size size}) {
     double heightCenter = size.height / 2;
-    double widthCenter = size.width / 2;
-    double width = size.width;
 
     Offset startPoint = Offset(0, heightCenter);
     Offset endPoint = Offset(_getDrawWidthValue(size: size), heightCenter);
@@ -164,7 +177,7 @@ class LinearProgressPainter extends CustomPainter with ProgressMixin {
   }
 
   double _getDrawWidthValue({@required Size size}) {
-    double drawWidthValue = size.width * (_value / _max);
+    double drawWidthValue = size.width * ((_value - _min) / (_max - _min));
 
     //range size
     drawWidthValue = drawWidthValue < 0 ? 0 : drawWidthValue;
