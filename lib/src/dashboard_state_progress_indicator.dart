@@ -2,18 +2,22 @@ import 'package:flutter/material.dart';
 
 import 'progress_mixin.dart';
 
-/// CircularStateProgressIndicator
+///
+const double LIMITED_MIN_VALUE = 0;
+const double LIMITED_MAX_VALUE = 100;
+const double DEFAULT_VALUE = 10;
+
+/// Gap degree limited min and max value
+const int LIMITED_MIN_GAP_DEGREE = 0;
+const int LIMITED_MAX_GAP_DEGREE = 360;
+const int DEFAULT_GAP_DEGREE = 60;
+const int UNIT_GAP_DEGREE = 60;
+
+const double DEFAULT_STROKE_WIDTH = 5;
+
+/// DashboardStateProgressIndicator
 // ignore: must_be_immutable
-class AirCircularStateProgressIndicator extends StatefulWidget {
-  /// Limited min value
-  static const double LIMITED_MIN_VALUE = 0;
-
-  /// Limited max value
-  static const double LIMITED_MAX_VALUE = 100;
-
-  /// default value
-  static const double DEFAULT_VALUE = 10;
-
+class AirDashboardStateProgressIndicator extends StatefulWidget {
   Size _size;
   double _min;
   double _max;
@@ -24,34 +28,43 @@ class AirCircularStateProgressIndicator extends StatefulWidget {
   double _valueStrokeWidth;
   bool _filled;
   bool _useCenter;
+  bool _roundCap;
+
+  double _gapDegree;
 
   /// constructor
-  AirCircularStateProgressIndicator({
-    @required Size size,
+  AirDashboardStateProgressIndicator({
+    Size size,
     double min = LIMITED_MIN_VALUE,
     double max = LIMITED_MAX_VALUE,
     num value = DEFAULT_VALUE,
+    int gapDegree = DEFAULT_GAP_DEGREE,
     Color pathColor = Colors.white,
     Color valueColor = Colors.green,
-    double pathStrokeWidth = 5,
-    double valueStrokeWidth = 5,
+    double pathStrokeWidth = DEFAULT_STROKE_WIDTH,
+    double valueStrokeWidth = DEFAULT_STROKE_WIDTH,
     bool filled = false,
     bool useCenter = false,
+    bool roundCap = true,
   }) {
     assert(size != null);
     assert(min >= LIMITED_MIN_VALUE);
     assert(max <= LIMITED_MAX_VALUE);
     assert(value >= min);
     assert(value <= max);
+    assert(gapDegree >= LIMITED_MIN_GAP_DEGREE);
+    assert(gapDegree <= LIMITED_MAX_GAP_DEGREE);
     assert(pathColor != null);
     assert(valueColor != null);
     assert(pathStrokeWidth != null);
     assert(valueStrokeWidth != null);
     assert(filled != null);
     assert(useCenter != null);
+    assert(roundCap != null);
     _size = size;
-    //value
+    //value >= 0.00,value<=100
     _value = value;
+    _gapDegree = gapDegree / UNIT_GAP_DEGREE;
     _min = min;
     _max = max;
     //color
@@ -61,6 +74,8 @@ class AirCircularStateProgressIndicator extends StatefulWidget {
     _pathStrokeWidth = pathStrokeWidth;
     _valueStrokeWidth = valueStrokeWidth;
 
+    //paint round cap
+    _roundCap = roundCap;
     //
     _filled = filled;
     _useCenter = useCenter;
@@ -74,22 +89,24 @@ class AirCircularStateProgressIndicator extends StatefulWidget {
 
   @override
   State<StatefulWidget> createState() {
-    return _CircularStateProgressIndicatorState();
+    return _DashboardStateProgressIndicatorState();
   }
 }
 
-/// _CircularStateProgressIndicatorState
-class _CircularStateProgressIndicatorState
-    extends State<AirCircularStateProgressIndicator> {
+/// _DashboardStateProgressIndicatorState
+class _DashboardStateProgressIndicatorState
+    extends State<AirDashboardStateProgressIndicator> {
   @override
   Widget build(BuildContext context) {
     return CustomPaint(
       size: widget._size,
-      painter: CircularProgressPaint._(
+      painter: DashboardProgressPaint._(
         shouldRepaint: false,
+        division: LIMITED_MAX_GAP_DEGREE ~/ UNIT_GAP_DEGREE,
         min: widget._min,
         max: widget._max,
         value: widget._value,
+        gapDegree: widget._gapDegree,
         pathPaint: _getPathPaint(),
         valuePaint: _getValuePaint(),
         useCenter: widget._useCenter,
@@ -101,8 +118,8 @@ class _CircularStateProgressIndicatorState
     return Paint()
       ..color = widget._pathColor
       ..strokeWidth = widget._pathStrokeWidth
-      ..strokeCap = StrokeCap.round
-      ..strokeJoin = StrokeJoin.round
+      ..strokeCap = widget._roundCap ? StrokeCap.round : StrokeCap.square
+      ..strokeJoin = widget._roundCap ? StrokeJoin.round : StrokeJoin.bevel
       ..style = widget._filled ? PaintingStyle.fill : PaintingStyle.stroke;
   }
 
@@ -110,24 +127,19 @@ class _CircularStateProgressIndicatorState
     return Paint()
       ..color = widget._valueColor
       ..strokeWidth = widget._valueStrokeWidth
-      ..strokeCap = StrokeCap.round
-      ..strokeJoin = StrokeJoin.bevel
+      ..strokeCap = widget._roundCap ? StrokeCap.round : StrokeCap.square
+      ..strokeJoin = widget._roundCap ? StrokeJoin.round : StrokeJoin.bevel
       ..style = widget._filled ? PaintingStyle.fill : PaintingStyle.stroke;
   }
 }
 
-/// CircularProgressPaint
-class CircularProgressPaint extends CustomPainter with ProgressMixin {
-  /// The max sweep angle exclude stroke cap
-  final num maxSweepAngleExcludeCap = 6.2;
-
-  /// The max sweep angle include stroke cap
-  final num maxSweepAngleIncludeCap = 6.5;
+/// DashboardProgressPaint
+class DashboardProgressPaint extends CustomPainter with ProgressMixin {
+  static const int GAP_DEGREE_DIVISION = 6;
+  static const PI = 3.1415926;
+  final num maxSweepAngle = 6.5;
+  final num circleMaxSweepAngle = 6.1275;
   final num minSweepAngle = 1.0;
-
-  /// start angle
-  static const double DEFAULT_START_ANGLE = -1.5;
-
   bool _shouldRepaint;
   num _min;
   num _max;
@@ -135,22 +147,28 @@ class CircularProgressPaint extends CustomPainter with ProgressMixin {
   Paint _pathPaint;
   Paint _valuePaint;
   bool _useCenter;
+  double _gapDegree;
+  int _division;
 
   /// CircularProgressPaint
   ///
-  CircularProgressPaint._({
+  DashboardProgressPaint._({
     @required bool shouldRepaint,
+    @required int division,
     @required num min,
     @required num max,
     @required num value,
+    @required double gapDegree,
     @required Paint pathPaint,
     @required Paint valuePaint,
     @required bool useCenter,
   }) {
     _shouldRepaint = shouldRepaint;
+    _division = division;
     _min = min;
     _max = max;
     _value = value;
+    _gapDegree = gapDegree;
     _pathPaint = pathPaint;
     _valuePaint = valuePaint;
     _useCenter = useCenter;
@@ -173,7 +191,9 @@ class CircularProgressPaint extends CustomPainter with ProgressMixin {
   drawProgressPath({Canvas canvas, Paint paint, Size size}) {
     Offset center = _getOffset(size: size);
     double radius = _getRadius(size: size);
-    canvas.drawCircle(center, radius, paint);
+
+    canvas.drawArc(Rect.fromCircle(center: center, radius: radius),
+        _getStartAngle(), _getMaxSweepAngle(), useCenter, paint);
   }
 
   @override
@@ -181,32 +201,31 @@ class CircularProgressPaint extends CustomPainter with ProgressMixin {
     Offset center = _getOffset(size: size);
     double radius = _getRadius(size: size);
     canvas.drawArc(Rect.fromCircle(center: center, radius: radius),
-        _getStartAngle(), _getSweepAngle(), useCenter, paint);
+        _getStartAngle(), _getValueSweepAngle(), useCenter, paint);
+  }
+
+  double get gapDegree => _gapDegree;
+  int get division => _division;
+
+  double _getCircleMaxAngle() {
+    return circleMaxSweepAngle;
   }
 
   double _getStartAngle() {
-    return DEFAULT_START_ANGLE;
+    return _getGapDegreeSweepAngle() / 2 + maxSweepAngle / 4;
   }
 
-  double _getSweepAngle() {
-    if (_value == _min) {
-      return 0;
-    }
-    if (_value > _min && _value < maxHalf) {
-      return (_value * 0.0612);
-    }
-    if (_value == maxHalf) {
-      return _value * 0.0600;
-    }
-    if (_value > maxHalf && _value < _max) {}
-    if (_value == _max) {
-      return maxSweepAngleIncludeCap;
-    }
-    return (_value * 0.0615);
+  double _getGapDegreeSweepAngle() {
+    return (maxSweepAngle / division) * _gapDegree;
   }
 
-  /// the half of max value
-  get maxHalf => _max / 2;
+  double _getMaxSweepAngle() {
+    return _getCircleMaxAngle() - _getGapDegreeSweepAngle();
+  }
+
+  double _getValueSweepAngle() {
+    return _getMaxSweepAngle() / _max * _value;
+  }
 
   /// useCenter
   /// whether use center point close the path.
@@ -214,7 +233,6 @@ class CircularProgressPaint extends CustomPainter with ProgressMixin {
     return _useCenter;
   }
 
-  /// circular radius
   double _getRadius({Size size}) {
     double radius =
         size.width / 2 < size.height / 2 ? size.width / 2 : size.height / 2;
@@ -222,7 +240,6 @@ class CircularProgressPaint extends CustomPainter with ProgressMixin {
     return radius;
   }
 
-  /// point
   Offset _getOffset({Size size}) {
     return Offset(size.width / 2, size.height / 2);
   }

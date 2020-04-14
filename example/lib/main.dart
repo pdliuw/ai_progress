@@ -134,20 +134,48 @@ class _MyHomePageState extends State<MyHomePage>
                 });
               },
             ),
-            Stack(
-              alignment: Alignment.center,
-              children: <Widget>[
-                Container(
-                  width: 150,
-                  height: 150,
-                  padding: EdgeInsets.all(5),
-                  child: CircularProgressIndicator(
-                    value: _segmentValue / 10,
-                    strokeWidth: 10.0,
-                    valueColor: _colorTween,
-                  ),
+            Row(
+              children: [
+                Spacer(),
+                Stack(
+                  alignment: Alignment.center,
+                  children: <Widget>[
+                    Container(
+                      width: 150,
+                      height: 150,
+                      padding: EdgeInsets.all(5),
+                      child: CircularProgressIndicator(
+                        value: _segmentValue / 10,
+                        strokeWidth: 10.0,
+                        valueColor: _colorTween,
+                      ),
+                    ),
+                    Text("${_segmentValue / 10 * 100}%"),
+                  ],
                 ),
-                Text("${_segmentValue / 10 * 100}%"),
+                Spacer(),
+                Stack(
+                  alignment: Alignment.center,
+                  children: <Widget>[
+                    Container(
+                      width: 150,
+                      height: 150,
+                      padding: EdgeInsets.all(5),
+                      child: AirDashboardStateProgressIndicator(
+                        size: Size(150, 150),
+                        value: _segmentValue / 10 * 100, //1~100
+                        valueColor:
+                            ColorTween(begin: Colors.grey, end: Colors.blue)
+                                .transform(_segmentValue / 10),
+                        pathStrokeWidth: 10,
+                        valueStrokeWidth: 10,
+                        gapDegree: 60,
+                      ),
+                    ),
+                    Text("${_segmentValue / 10 * 100}%"),
+                  ],
+                ),
+                Spacer(),
               ],
             ),
             //圆环、扇形样式的进度
