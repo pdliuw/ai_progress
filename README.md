@@ -312,6 +312,74 @@ import 'package:ai_progress/ai_progress.dart';
 ```
 
 
+### 8. 仪表盘进度-方形帽
+
+|ai_progress: dashboard-square|
+|:-|
+|![dashboard-square](https://github.com/pdliuw/ai_progress/blob/master/example/gif/ai_progress_dashboard-square.gif)|
+|:-|
+
+```
+   
+                Stack(
+                  alignment: Alignment.center,
+                  children: <Widget>[
+                    Container(
+                      width: 150,
+                      height: 150,
+                      padding: EdgeInsets.all(5),
+                      child: AirDashboardStateProgressIndicator(
+                        size: Size(150, 150),
+                        value: _segmentValue / 10 * 100, //1~100
+                        valueColor:
+                            ColorTween(begin: Colors.grey, end: Colors.blue)
+                                .transform(_segmentValue / 10),
+                        pathStrokeWidth: 10,
+                        valueStrokeWidth: 10,
+                        gapDegree: 60,
+                        roundCap: false,
+                      ),
+                    ),
+                    Text("${_segmentValue / 10 * 100}%"),
+                  ],
+                ),
+    
+```
+
+### 9. 仪表盘进度-圆形帽
+
+|ai_progress: dashboard-round|
+|:-|
+|![dashboard-round](https://github.com/pdliuw/ai_progress/blob/master/example/gif/ai_progress_dashboard-round.gif)|
+|:-|
+
+```
+   
+                Stack(
+                  alignment: Alignment.center,
+                  children: <Widget>[
+                    Container(
+                      width: 150,
+                      height: 150,
+                      padding: EdgeInsets.all(5),
+                      child: AirDashboardStateProgressIndicator(
+                        size: Size(150, 150),
+                        value: _segmentValue / 10 * 100, //1~100
+                        valueColor:
+                            ColorTween(begin: Colors.grey, end: Colors.blue)
+                                .transform(_segmentValue / 10),
+                        pathStrokeWidth: 10,
+                        valueStrokeWidth: 10,
+                        gapDegree: 60,
+                        roundCap: true,
+                      ),
+                    ),
+                    Text("${_segmentValue / 10 * 100}%"),
+                  ],
+                ),
+    
+```
+
 意犹未尽？[点击，查看项目示例](https://github.com/pdliuw/flutter_app_sample)
 
 

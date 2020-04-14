@@ -1,3 +1,7 @@
+## [0.1.2] - Dashboard
+
+* Add: Dashboard progress
+
 ## [0.1.1] - Document
 
 * config document
