@@ -1,3 +1,7 @@
+## [0.1.3] - Update
+
+* Update: document resource
+
 ## [0.1.2] - Dashboard
 
 * Add: Dashboard progress
