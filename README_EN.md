@@ -15,6 +15,7 @@ ai_progress: [![pub package](https://img.shields.io/pub/v/ai_progress.svg)](http
 * 2. arc progress
 * 3. linear progress
 * 4. step progress
+* 5. Dashboard progress
 
 ## Effect
 

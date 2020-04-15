@@ -15,6 +15,7 @@ ai_progress: [![pub package](https://img.shields.io/pub/v/ai_progress.svg)](http
 * 2. 扇形进度
 * 3. 线性进度
 * 4. 步进进度
+* 5. 仪表盘进度
 
 ## Effect
 
