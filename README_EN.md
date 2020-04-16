@@ -326,7 +326,43 @@ import 'package:ai_progress/ai_progress.dart';
     
 ```
 
-### 8. Dashboard-square
+### 8. Step-round
+
+|ai_progress: step-round|
+|:-|
+|![step-round](https://github.com/pdliuw/ai_progress/blob/master/example/gif/ai_progress_step-round.gif)|
+|:-|
+
+```
+   
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Container(
+                      width: 220,
+                      height: 30,
+                      padding: EdgeInsets.all(0),
+                      child: AirStepStateProgressIndicator(
+                        size: Size(150, 150),
+                        stepCount: _segmentChildren.length,
+                        stepValue: _segmentValue,
+                        valueColor:
+                            ColorTween(begin: Colors.grey, end: Colors.blue)
+                                .transform(_segmentValue / 10),
+                        pathStrokeWidth: 30.0,
+                        valueStrokeWidth: 30.0,
+                        roundCap: true,
+                      ),
+                    ),
+                    Text("${_segmentValue / 10 * 100}%"),
+                  ],
+                ), 
+    
+```
+
+
+
+### 9. Dashboard-square
 
 |ai_progress: dashboard-square|
 |:-|
@@ -360,7 +396,7 @@ import 'package:ai_progress/ai_progress.dart';
     
 ```
 
-### 9. Dashboard-round
+### 10. Dashboard-round
 
 |ai_progress: dashboard-round|
 |:-|
