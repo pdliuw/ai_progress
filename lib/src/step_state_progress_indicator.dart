@@ -75,18 +75,30 @@ class AirStepStateProgressIndicator extends StatefulWidget {
 class _StepStateProgressIndicator extends State<AirStepStateProgressIndicator> {
   @override
   Widget build(BuildContext context) {
-    return CustomPaint(
-      size: widget.size,
-      painter: StepProgressPainter._(
-        shouldRepaint: false,
-        stepCount: widget.stepCount,
-        stepValue: widget.stepValue,
-        pathStrokeWidth: widget._pathStrokeWidth,
-        valueStrokeWidth: widget._valueStrokeWidth,
-        spaceWidth: widget._spaceWidth,
-        pathColor: widget._pathColor,
-        valueColor: widget._valueColor,
-        roundCap: widget._roundCap,
+    return Container(
+      clipBehavior: Clip.hardEdge,
+      decoration: ShapeDecoration(
+        shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.only(
+          topLeft: Radius.circular(widget._roundCap ? 45 : 0),
+          bottomLeft: Radius.circular(widget._roundCap ? 45 : 0),
+          topRight: Radius.circular(widget._roundCap ? 45 : 0),
+          bottomRight: Radius.circular(widget._roundCap ? 45 : 0),
+        )),
+      ),
+      child: CustomPaint(
+        size: widget.size,
+        painter: StepProgressPainter._(
+          shouldRepaint: false,
+          stepCount: widget.stepCount,
+          stepValue: widget.stepValue,
+          pathStrokeWidth: widget._pathStrokeWidth,
+          valueStrokeWidth: widget._valueStrokeWidth,
+          spaceWidth: widget._spaceWidth,
+          pathColor: widget._pathColor,
+          valueColor: widget._valueColor,
+          roundCap: widget._roundCap,
+        ),
       ),
     );
   }
@@ -188,8 +200,8 @@ class StepProgressPainter extends CustomPainter with ProgressMixin {
     return Paint()
       ..color = pathColor
       ..style = PaintingStyle.stroke
-      ..strokeCap = _roundCap ? StrokeCap.round : StrokeCap.butt
-      ..strokeJoin = _roundCap ? StrokeJoin.round : StrokeJoin.miter
+      ..strokeCap = _roundCap ? StrokeCap.butt : StrokeCap.butt
+      ..strokeJoin = _roundCap ? StrokeJoin.miter : StrokeJoin.miter
       ..strokeWidth = pathStrokeWidth;
   }
 
@@ -197,8 +209,8 @@ class StepProgressPainter extends CustomPainter with ProgressMixin {
     return Paint()
       ..color = valueColor
       ..style = PaintingStyle.stroke
-      ..strokeCap = _roundCap ? StrokeCap.round : StrokeCap.butt
-      ..strokeJoin = _roundCap ? StrokeJoin.round : StrokeJoin.miter
+      ..strokeCap = _roundCap ? StrokeCap.butt : StrokeCap.butt
+      ..strokeJoin = _roundCap ? StrokeJoin.miter : StrokeJoin.miter
       ..strokeWidth = valueStrokeWidth;
   }
 
