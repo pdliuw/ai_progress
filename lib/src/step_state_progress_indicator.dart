@@ -76,7 +76,6 @@ class _StepStateProgressIndicator extends State<AirStepStateProgressIndicator> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      clipBehavior: Clip.hardEdge,
       decoration: ShapeDecoration(
         shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.only(
@@ -100,6 +99,7 @@ class _StepStateProgressIndicator extends State<AirStepStateProgressIndicator> {
           roundCap: widget._roundCap,
         ),
       ),
+      clipBehavior: Clip.antiAlias,
     );
   }
 }

@@ -1,4 +1,12 @@
-## [0.1.4] - Add
+## [0.2.0-pre] - pre
+
+* Add: 'clipBehavior: Clip.antiAlias,' compile 'v0.2.0'
+
+## [0.2.0] - Stable
+
+* Stable
+
+## [0.1.9] - Add
 
 * Add: Step progress round cap style
 
