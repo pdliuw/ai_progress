@@ -1,3 +1,7 @@
+## [0.1.4] - Add
+
+* Add: Step progress round cap style
+
 ## [0.1.3] - Update
 
 * Update: document resource

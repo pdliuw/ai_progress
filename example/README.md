@@ -285,7 +285,7 @@ aai_progress: [![pub package](https://img.shields.io/pub/v/ai_progress.svg)](htt
                       children: [
                         Container(
                           width: 90,
-                          height: 50,
+                          height: 10,
                           padding: EdgeInsets.all(0),
                           child: AirStepStateProgressIndicator(
                             size: Size(150, 150),
@@ -296,6 +296,7 @@ aai_progress: [![pub package](https://img.shields.io/pub/v/ai_progress.svg)](htt
                                     .transform(_segmentValue / 10),
                             pathStrokeWidth: 10.0,
                             valueStrokeWidth: 10.0,
+                            roundCap: true,
                           ),
                         ),
                         Text("${_segmentValue / 10 * 100}%"),
@@ -304,14 +305,16 @@ aai_progress: [![pub package](https://img.shields.io/pub/v/ai_progress.svg)](htt
                     Spacer(),
                   ],
                 ),
-                Row(
+                //Step progress round and square cap
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    Spacer(),
                     Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Container(
-                          width: 250,
-                          height: 50,
+                          width: 220,
+                          height: 30,
                           padding: EdgeInsets.all(0),
                           child: AirStepStateProgressIndicator(
                             size: Size(150, 150),
@@ -322,14 +325,39 @@ aai_progress: [![pub package](https://img.shields.io/pub/v/ai_progress.svg)](htt
                                     .transform(_segmentValue / 10),
                             pathStrokeWidth: 30.0,
                             valueStrokeWidth: 30.0,
+                            roundCap: false,
                           ),
                         ),
                         Text("${_segmentValue / 10 * 100}%"),
                       ],
                     ),
-                    Spacer(),
+                    Divider(),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Container(
+                          width: 220,
+                          height: 30,
+                          padding: EdgeInsets.all(0),
+                          child: AirStepStateProgressIndicator(
+                            size: Size(150, 150),
+                            stepCount: _segmentChildren.length,
+                            stepValue: _segmentValue,
+                            valueColor:
+                                ColorTween(begin: Colors.grey, end: Colors.blue)
+                                    .transform(_segmentValue / 10),
+                            pathStrokeWidth: 30.0,
+                            valueStrokeWidth: 30.0,
+                            roundCap: true,
+                          ),
+                        ),
+                        Text("${_segmentValue / 10 * 100}%"),
+                      ],
+                    ),
                   ],
                 ),
+                Divider(),
+                //linear square progress
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
