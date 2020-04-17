@@ -235,6 +235,8 @@ class _MyHomePageState extends State<MyHomePage>
                 Spacer(),
               ],
             ),
+            //无进度值的加载
+            CircularProgressIndicator(),
             //线性、步进样式的进度
             Row(
               children: [
