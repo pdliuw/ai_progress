@@ -1,3 +1,7 @@
+## [0.2.1] - Stable
+
+* Update: example document and resource 
+
 ## [0.2.0-pre] - pre
 
 * Add: 'clipBehavior: Clip.antiAlias,' compile 'v0.2.0'
