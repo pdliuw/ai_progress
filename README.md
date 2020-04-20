@@ -325,11 +325,20 @@ import 'package:ai_progress/ai_progress.dart';
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Container(
+                      clipBehavior: Clip.antiAlias,
+                      decoration: ShapeDecoration(
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.only(
+                          topLeft: Radius.circular(45),
+                          bottomLeft: Radius.circular(45),
+                          topRight: Radius.circular(45),
+                          bottomRight: Radius.circular(45),
+                        )),
+                      ),
                       width: 220,
-                      height: 30,
-                      padding: EdgeInsets.all(0),
+                      height: 30.0,
                       child: AirStepStateProgressIndicator(
-                        size: Size(150, 150),
+                        size: Size(150, 220),
                         stepCount: _segmentChildren.length,
                         stepValue: _segmentValue,
                         valueColor:
@@ -337,12 +346,11 @@ import 'package:ai_progress/ai_progress.dart';
                                 .transform(_segmentValue / 10),
                         pathStrokeWidth: 30.0,
                         valueStrokeWidth: 30.0,
-                        roundCap: true,
                       ),
                     ),
                     Text("${_segmentValue / 10 * 100}%"),
                   ],
-                ), 
+                ),
     
 ```
 

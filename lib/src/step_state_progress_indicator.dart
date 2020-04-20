@@ -24,8 +24,6 @@ class AirStepStateProgressIndicator extends StatefulWidget {
   Color _pathColor;
   Color _valueColor;
 
-  bool _roundCap;
-
   /// constructor
   AirStepStateProgressIndicator({
     this.size,
@@ -36,7 +34,6 @@ class AirStepStateProgressIndicator extends StatefulWidget {
     double spaceWidth = DEFAULT_SPACE_WIDTH,
     Color pathColor = Colors.grey,
     Color valueColor = Colors.green,
-    bool roundCap = false,
   }) {
     assert(size != null);
     assert(stepCount != null);
@@ -49,7 +46,6 @@ class AirStepStateProgressIndicator extends StatefulWidget {
     assert(spaceWidth != null);
     assert(pathColor != null);
     assert(valueColor != null);
-    assert(roundCap != null);
 
     //stroke width
     _pathStrokeWidth = pathStrokeWidth;
@@ -61,9 +57,6 @@ class AirStepStateProgressIndicator extends StatefulWidget {
     //color
     _pathColor = pathColor;
     _valueColor = valueColor;
-
-    //cap style
-    _roundCap = roundCap;
   }
   @override
   State<StatefulWidget> createState() {
@@ -75,31 +68,19 @@ class AirStepStateProgressIndicator extends StatefulWidget {
 class _StepStateProgressIndicator extends State<AirStepStateProgressIndicator> {
   @override
   Widget build(BuildContext context) {
-    return Container(
-      decoration: ShapeDecoration(
-        shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.only(
-          topLeft: Radius.circular(widget._roundCap ? 45 : 0),
-          bottomLeft: Radius.circular(widget._roundCap ? 45 : 0),
-          topRight: Radius.circular(widget._roundCap ? 45 : 0),
-          bottomRight: Radius.circular(widget._roundCap ? 45 : 0),
-        )),
+    return CustomPaint(
+      size: widget.size,
+      painter: StepProgressPainter._(
+        shouldRepaint: false,
+        stepCount: widget.stepCount,
+        stepValue: widget.stepValue,
+        pathStrokeWidth: widget._pathStrokeWidth,
+        valueStrokeWidth: widget._valueStrokeWidth,
+        spaceWidth: widget._spaceWidth,
+        pathColor: widget._pathColor,
+        valueColor: widget._valueColor,
+        roundCap: false,
       ),
-      child: CustomPaint(
-        size: widget.size,
-        painter: StepProgressPainter._(
-          shouldRepaint: false,
-          stepCount: widget.stepCount,
-          stepValue: widget.stepValue,
-          pathStrokeWidth: widget._pathStrokeWidth,
-          valueStrokeWidth: widget._valueStrokeWidth,
-          spaceWidth: widget._spaceWidth,
-          pathColor: widget._pathColor,
-          valueColor: widget._valueColor,
-          roundCap: widget._roundCap,
-        ),
-      ),
-      clipBehavior: Clip.antiAlias,
     );
   }
 }
