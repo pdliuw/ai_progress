@@ -1,3 +1,8 @@
+## [1.0.0] - Stable
+
+* adapter: flutter version = v1.22
+* upgrade: iOS development target from 8.0 to 9.0 
+
 ## [0.2.1] - Stable
 
 * Update: example document and resource 
