@@ -10,20 +10,20 @@ const double LINEAR_DEFAULT_VALUE = 10;
 ///
 // ignore: must_be_immutable
 class AirLinearStateProgressIndicator extends StatefulWidget {
-  double _value;
-  double _min;
-  double _max;
-  Size _size;
-  bool _shouldRepaint;
-  bool _roundCap;
-  Color _pathColor;
-  Color _valueColor;
-  double _pathStrokeWidth = 5;
-  double _valueStrokeWidth = 5;
+  double? _value;
+  double? _min;
+  double? _max;
+  Size? _size;
+  bool? _shouldRepaint;
+  bool? _roundCap;
+  Color? _pathColor;
+  Color? _valueColor;
+  double? _pathStrokeWidth = 5;
+  double? _valueStrokeWidth = 5;
 
   /// constructor
   AirLinearStateProgressIndicator({
-    @required Size size,
+    required Size size,
     double min = LINEAR_LIMITED_MIN_VALUE,
     double max = LINEAR_LIMITED_MAX_VALUE,
     double value = LINEAR_DEFAULT_VALUE,
@@ -31,20 +31,13 @@ class AirLinearStateProgressIndicator extends StatefulWidget {
     Color valueColor = Colors.green,
     bool roundCap = true,
     bool shouldRepaint = false,
-    double pathStrokeWidth,
-    double valueStrokeWidth,
+    double? pathStrokeWidth,
+    double? valueStrokeWidth,
   }) {
-    assert(size != null);
     assert(min >= LINEAR_LIMITED_MIN_VALUE);
     assert(max <= LINEAR_LIMITED_MAX_VALUE);
     assert(value >= min);
     assert(value <= max);
-    assert(pathColor != null);
-    assert(valueColor != null);
-    assert(roundCap != null);
-    assert(shouldRepaint != null);
-    assert(pathStrokeWidth != null);
-    assert(valueStrokeWidth != null);
     _size = size;
     _min = min;
     _max = max;
@@ -72,17 +65,17 @@ class _LinearStateProgressIndicatorState
   @override
   Widget build(BuildContext context) {
     return CustomPaint(
-      size: widget._size,
+      size: widget._size!,
       painter: LinearProgressPainter._(
-        shouldRepaint: widget._shouldRepaint,
-        roundCap: widget._roundCap,
-        min: widget._min,
-        max: widget._max,
-        value: widget._value,
-        pathColor: widget._pathColor,
-        valueColor: widget._valueColor,
-        pathStrokeWidth: widget._pathStrokeWidth,
-        valueStrokeWidth: widget._valueStrokeWidth,
+        shouldRepaint: widget._shouldRepaint!,
+        roundCap: widget._roundCap!,
+        min: widget._min!,
+        max: widget._max!,
+        value: widget._value!,
+        pathColor: widget._pathColor!,
+        valueColor: widget._valueColor!,
+        pathStrokeWidth: widget._pathStrokeWidth!,
+        valueStrokeWidth: widget._valueStrokeWidth!,
       ),
     );
   }
@@ -90,29 +83,29 @@ class _LinearStateProgressIndicatorState
 
 /// LinearProgressPainter
 class LinearProgressPainter extends CustomPainter with ProgressMixin {
-  bool _shouldRepaint;
-  bool _roundCap;
-  double _min;
-  double _max;
-  double _value;
+  bool? _shouldRepaint;
+  bool? _roundCap;
+  double? _min;
+  double? _max;
+  double? _value;
 
-  Color _pathColor;
-  Color _valueColor;
+  Color? _pathColor;
+  Color? _valueColor;
 
-  double _pathStrokeWidth;
-  double _valueStrokeWidth;
+  double? _pathStrokeWidth;
+  double? _valueStrokeWidth;
 
   /// constructor
   LinearProgressPainter._({
-    @required bool shouldRepaint,
-    @required bool roundCap,
-    @required double min,
-    @required double max,
-    @required double value,
-    @required Color pathColor,
-    @required Color valueColor,
-    @required double pathStrokeWidth,
-    @required double valueStrokeWidth,
+    required bool shouldRepaint,
+    required bool roundCap,
+    required double min,
+    required double max,
+    required double value,
+    required Color pathColor,
+    required Color valueColor,
+    required double pathStrokeWidth,
+    required double valueStrokeWidth,
   }) {
     //should repaint
     _shouldRepaint = shouldRepaint;
@@ -138,11 +131,12 @@ class LinearProgressPainter extends CustomPainter with ProgressMixin {
 
   @override
   bool shouldRepaint(CustomPainter oldDelegate) {
-    return _shouldRepaint;
+    return _shouldRepaint!;
   }
 
   @override
-  drawProgressPath({Canvas canvas, Paint paint, Size size}) {
+  drawProgressPath(
+      {required Canvas canvas, required Paint paint, required Size size}) {
     double heightCenter = size.height / 2;
     double width = size.width;
 
@@ -153,7 +147,8 @@ class LinearProgressPainter extends CustomPainter with ProgressMixin {
   }
 
   @override
-  drawProgressValue({Canvas canvas, Paint paint, Size size}) {
+  drawProgressValue(
+      {required Canvas canvas, required Paint paint, required Size size}) {
     double heightCenter = size.height / 2;
 
     Offset startPoint = Offset(0, heightCenter);
@@ -164,20 +159,20 @@ class LinearProgressPainter extends CustomPainter with ProgressMixin {
 
   Paint _getDrawPathPaint() {
     return Paint()
-      ..color = _pathColor
-      ..strokeWidth = _pathStrokeWidth
-      ..strokeCap = _roundCap ? StrokeCap.round : StrokeCap.square;
+      ..color = _pathColor!
+      ..strokeWidth = _pathStrokeWidth!
+      ..strokeCap = _roundCap! ? StrokeCap.round : StrokeCap.square;
   }
 
   Paint _getDrawValuePaint() {
     return Paint()
-      ..color = _valueColor
-      ..strokeWidth = _valueStrokeWidth
-      ..strokeCap = _roundCap ? StrokeCap.round : StrokeCap.square;
+      ..color = _valueColor!
+      ..strokeWidth = _valueStrokeWidth!
+      ..strokeCap = _roundCap! ? StrokeCap.round : StrokeCap.square;
   }
 
-  double _getDrawWidthValue({@required Size size}) {
-    double drawWidthValue = size.width * ((_value - _min) / (_max - _min));
+  double _getDrawWidthValue({required Size size}) {
+    double drawWidthValue = size.width * ((_value! - _min!) / (_max! - _min!));
 
     //range size
     drawWidthValue = drawWidthValue < 0 ? 0 : drawWidthValue;

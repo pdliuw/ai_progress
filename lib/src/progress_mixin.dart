@@ -3,8 +3,10 @@ import 'dart:ui';
 /// ProgressMixin
 mixin ProgressMixin {
   /// draw progress path
-  drawProgressPath({Canvas canvas, Paint paint, Size size});
+  drawProgressPath(
+      {required Canvas canvas, required Paint paint, required Size size});
 
   /// draw progress value
-  drawProgressValue({Canvas canvas, Paint paint, Size size});
+  drawProgressValue(
+      {required Canvas canvas, required Paint paint, required Size size});
 }

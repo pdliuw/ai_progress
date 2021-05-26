@@ -1,3 +1,7 @@
+## [2.0.0]
+
+* null safety.
+
 ## [1.0.0] - Stable
 
 * adapter: flutter version = v1.22

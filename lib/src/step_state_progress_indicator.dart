@@ -17,16 +17,16 @@ class AirStepStateProgressIndicator extends StatefulWidget {
   final int stepCount;
   final int stepValue;
 
-  double _pathStrokeWidth;
-  double _valueStrokeWidth;
-  double _spaceWidth;
+  double? _pathStrokeWidth;
+  double? _valueStrokeWidth;
+  double? _spaceWidth;
 
-  Color _pathColor;
-  Color _valueColor;
+  Color? _pathColor;
+  Color? _valueColor;
 
   /// constructor
   AirStepStateProgressIndicator({
-    this.size,
+    required this.size,
     this.stepCount = DEFAULT_STEP_COUNT,
     this.stepValue = DEFAULT_STEP_VALUE,
     double pathStrokeWidth = DEFAULT_STROKE_WIDTH,
@@ -35,17 +35,9 @@ class AirStepStateProgressIndicator extends StatefulWidget {
     Color pathColor = Colors.grey,
     Color valueColor = Colors.green,
   }) {
-    assert(size != null);
-    assert(stepCount != null);
     assert(stepCount > LIMITED_STEP_MIN_VALUE);
-    assert(stepValue != null);
     assert(stepValue >= LIMITED_STEP_MIN_VALUE);
     assert(stepValue <= stepCount);
-    assert(pathStrokeWidth != null);
-    assert(valueStrokeWidth != null);
-    assert(spaceWidth != null);
-    assert(pathColor != null);
-    assert(valueColor != null);
 
     //stroke width
     _pathStrokeWidth = pathStrokeWidth;
@@ -87,31 +79,31 @@ class _StepStateProgressIndicator extends State<AirStepStateProgressIndicator> {
 
 /// StepProgressPainter
 class StepProgressPainter extends CustomPainter with ProgressMixin {
-  bool _shouldRepaint;
-  int _stepCount;
-  int _stepValue;
+  bool? _shouldRepaint;
+  int? _stepCount;
+  int? _stepValue;
 
-  double _pathStrokeWidth;
-  double _valueStrokeWidth;
+  double? _pathStrokeWidth;
+  double? _valueStrokeWidth;
 
-  double _spaceWidth;
+  double? _spaceWidth;
 
-  Color _valueColor;
-  Color _pathColor;
+  Color? _valueColor;
+  Color? _pathColor;
 
-  bool _roundCap;
+  bool? _roundCap;
 
   /// constructor
   StepProgressPainter._({
-    @required bool shouldRepaint,
-    @required int stepCount,
-    @required int stepValue,
-    double pathStrokeWidth,
-    double valueStrokeWidth,
-    double spaceWidth,
-    Color pathColor,
-    Color valueColor,
-    bool roundCap,
+    required bool shouldRepaint,
+    required int stepCount,
+    required int stepValue,
+    double? pathStrokeWidth,
+    double? valueStrokeWidth,
+    double? spaceWidth,
+    Color? pathColor,
+    Color? valueColor,
+    bool? roundCap,
   }) {
     //should repaint
     _shouldRepaint = shouldRepaint;
@@ -145,29 +137,35 @@ class StepProgressPainter extends CustomPainter with ProgressMixin {
 
   @override
   bool shouldRepaint(CustomPainter oldDelegate) {
-    return _shouldRepaint;
+    return _shouldRepaint!;
   }
 
   @override
-  drawProgressPath({Canvas canvas, Paint paint, Size size}) {
+  drawProgressPath(
+      {required Canvas canvas, required Paint paint, required Size size}) {
     //draw step progress path
     _drawStep(canvas: canvas, paint: paint, size: size, loopCount: stepCount);
   }
 
   @override
-  drawProgressValue({Canvas canvas, Paint paint, Size size}) {
+  drawProgressValue(
+      {required Canvas canvas, required Paint paint, required Size size}) {
     //draw step progress value
     _drawStep(canvas: canvas, paint: paint, size: size, loopCount: stepValue);
   }
 
-  _drawStep({Canvas canvas, Paint paint, Size size, int loopCount}) {
+  _drawStep(
+      {required Canvas canvas,
+      required Paint paint,
+      required Size size,
+      required int loopCount}) {
     double y = size.height / 2;
 
     double startY = y;
     double endY = y;
     for (int i = 0; i < loopCount; i++) {
-      double startX = i *
-          (_getSingleStepWidth(size: size) + _getSingleSpaceWidth(size: size));
+      double startX =
+          i * (_getSingleStepWidth(size: size) + _getSingleSpaceWidth());
       double endX = startX + _getSingleStepWidth(size: size);
 
       Offset startPoint = Offset(startX, startY);
@@ -181,8 +179,8 @@ class StepProgressPainter extends CustomPainter with ProgressMixin {
     return Paint()
       ..color = pathColor
       ..style = PaintingStyle.stroke
-      ..strokeCap = _roundCap ? StrokeCap.butt : StrokeCap.butt
-      ..strokeJoin = _roundCap ? StrokeJoin.miter : StrokeJoin.miter
+      ..strokeCap = _roundCap! ? StrokeCap.butt : StrokeCap.butt
+      ..strokeJoin = _roundCap! ? StrokeJoin.miter : StrokeJoin.miter
       ..strokeWidth = pathStrokeWidth;
   }
 
@@ -190,27 +188,27 @@ class StepProgressPainter extends CustomPainter with ProgressMixin {
     return Paint()
       ..color = valueColor
       ..style = PaintingStyle.stroke
-      ..strokeCap = _roundCap ? StrokeCap.butt : StrokeCap.butt
-      ..strokeJoin = _roundCap ? StrokeJoin.miter : StrokeJoin.miter
+      ..strokeCap = _roundCap! ? StrokeCap.butt : StrokeCap.butt
+      ..strokeJoin = _roundCap! ? StrokeJoin.miter : StrokeJoin.miter
       ..strokeWidth = valueStrokeWidth;
   }
 
-  int get stepCount => _stepCount;
+  int get stepCount => _stepCount!;
 
-  int get stepValue => _stepValue;
+  int get stepValue => _stepValue!;
 
-  Color get valueColor => _valueColor;
-  Color get pathColor => _pathColor;
+  Color get valueColor => _valueColor!;
+  Color get pathColor => _pathColor!;
 
-  double get pathStrokeWidth => _pathStrokeWidth;
-  double get valueStrokeWidth => _valueStrokeWidth;
+  double get pathStrokeWidth => _pathStrokeWidth!;
+  double get valueStrokeWidth => _valueStrokeWidth!;
 
-  double _getSingleStepWidth({Size size}) {
+  double _getSingleStepWidth({required Size size}) {
     return (size.width - ((stepCount - 1) * _getSingleSpaceWidth())) /
         stepCount;
   }
 
-  double _getSingleSpaceWidth({Size size}) {
-    return _spaceWidth;
+  double _getSingleSpaceWidth() {
+    return _spaceWidth!;
   }
 }
